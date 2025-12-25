@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Screening Business - Break-Even Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-2xl p-8 mb-6">
+            <h1 class="text-4xl font-bold text-slate-800 mb-2">AI Screening Business</h1>
+            <h2 class="text-xl text-slate-600">Monthly Break-Even Analysis Dashboard</h2>
+            <p class="text-sm text-slate-500 mt-2">Post-Launch (Month 4+) • All values adjustable in real-time</p>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Fixed Costs Panel -->
+            <div class="bg-white rounded-lg shadow-xl p-6">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                    <span class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">$</span>
+                    Fixed Costs
+                </h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Technical Development</label>
+                        <input type="number" id="techCost" value="999" min="0" step="50" 
+                            class="w-full px-4 py-2 border-2 border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                        <input type="range" id="techCostSlider" value="999" min="0" max="3000" step="50"
+                            class="w-full mt-2 accent-blue-600">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Marketing</label>
+                        <input type="number" id="marketingCost" value="750" min="0" step="50"
+                            class="w-full px-4 py-2 border-2 border-slate-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                        <input type="range" id="marketingCostSlider" value="750" min="0" max="3000" step="50"
+                            class="w-full mt-2 accent-blue-600">
+                    </div>
+                    
+                    <div class="pt-4 border-t-2 border-slate-200">
+                        <p class="text-sm text-slate-600">Total Monthly Fixed Costs</p>
+                        <p class="text-3xl font-bold text-red-600" id="totalFixed">$1,749</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Tiers Panel -->
+            <div class="bg-white rounded-lg shadow-xl p-6 lg:col-span-2">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                    <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm">₿</span>
+                    Pricing Tiers & Costs
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Premium Tier -->
+                    <div class="border-2 border-purple-300 rounded-lg p-4 bg-purple-50">
+                        <h4 class="font-bold text-purple-800 mb-3">Premium Tier</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Revenue/Month</label>
+                                <input type="number" id="premiumRevenue" value="30" min="0" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-purple-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Variable Cost/Unit</label>
+                                <input type="number" id="premiumCost" value="5.90" min="0" step="0.10"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-purple-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Sales Mix %</label>
+                                <input type="number" id="premiumMix" value="33.33" min="0" max="100" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-purple-500 focus:outline-none">
+                            </div>
+                            <div class="pt-2 border-t border-purple-300">
+                                <p class="text-xs text-slate-600">Contribution Margin</p>
+                                <p class="text-lg font-bold text-purple-700" id="premiumMargin">$24.10</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Tier -->
+                    <div class="border-2 border-blue-300 rounded-lg p-4 bg-blue-50">
+                        <h4 class="font-bold text-blue-800 mb-3">Enterprise Tier</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Revenue/Month</label>
+                                <input type="number" id="enterpriseRevenue" value="40" min="0" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Variable Cost/Unit</label>
+                                <input type="number" id="enterpriseCost" value="11.88" min="0" step="0.10"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Sales Mix %</label>
+                                <input type="number" id="enterpriseMix" value="33.33" min="0" max="100" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                            </div>
+                            <div class="pt-2 border-t border-blue-300">
+                                <p class="text-xs text-slate-600">Contribution Margin</p>
+                                <p class="text-lg font-bold text-blue-700" id="enterpriseMargin">$28.12</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Batch Tier -->
+                    <div class="border-2 border-emerald-300 rounded-lg p-4 bg-emerald-50">
+                        <h4 class="font-bold text-emerald-800 mb-3">Basic Batch</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Revenue/Month</label>
+                                <input type="number" id="basicRevenue" value="10" min="0" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Variable Cost/Unit</label>
+                                <input type="number" id="basicCost" value="1.56" min="0" step="0.10"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Sales Mix %</label>
+                                <input type="number" id="basicMix" value="33.34" min="0" max="100" step="1"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded focus:border-emerald-500 focus:outline-none">
+                            </div>
+                            <div class="pt-2 border-t border-emerald-300">
+                                <p class="text-xs text-slate-600">Contribution Margin</p>
+                                <p class="text-lg font-bold text-emerald-700" id="basicMargin">$8.44</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Mix Warning -->
+                <div class="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                    <p class="text-sm text-yellow-800">
+                        <strong>⚠️ Sales Mix Total:</strong> <span id="mixTotal" class="font-bold">100.00%</span>
+                        <span id="mixWarning" class="ml-2 text-xs"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Break-Even Results -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Key Metrics -->
+            <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-lg shadow-xl p-8 text-white">
+                <h3 class="text-2xl font-bold mb-6">Break-Even Analysis</h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-indigo-200 text-sm mb-1">Weighted Avg. Contribution Margin</p>
+                        <p class="text-4xl font-bold" id="weightedMargin">$20.22</p>
+                    </div>
+                    
+                    <div class="pt-6 border-t-2 border-indigo-400">
+                        <p class="text-indigo-200 text-sm mb-1">Monthly Break-Even Units</p>
+                        <p class="text-5xl font-bold" id="breakEvenUnits">87</p>
+                        <p class="text-sm text-indigo-200 mt-2">total subscriptions needed</p>
+                    </div>
+                    
+                    <div class="pt-6 border-t-2 border-indigo-400">
+                        <p class="text-indigo-200 text-sm mb-1">Break-Even Revenue</p>
+                        <p class="text-3xl font-bold" id="breakEvenRevenue">$1,749</p>
+                        <p class="text-sm text-indigo-200 mt-1">monthly revenue required</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Units by Tier -->
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Units Needed per Tier</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700">Premium Tier</p>
+                            <p class="text-xs text-slate-500" id="premiumMixDisplay">33.33% of sales</p>
+                        </div>
+                        <p class="text-3xl font-bold text-purple-700" id="premiumUnits">29</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700">Enterprise Tier</p>
+                            <p class="text-xs text-slate-500" id="enterpriseMixDisplay">33.33% of sales</p>
+                        </div>
+                        <p class="text-3xl font-bold text-blue-700" id="enterpriseUnits">29</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700">Basic Batch</p>
+                            <p class="text-xs text-slate-500" id="basicMixDisplay">33.34% of sales</p>
+                        </div>
+                        <p class="text-3xl font-bold text-emerald-700" id="basicUnits">29</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-slate-100 rounded-lg">
+                    <p class="text-xs text-slate-600 mb-2"><strong>Calculation Method:</strong></p>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                        Units per Tier = Total Break-Even Units × Sales Mix %
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensitivity Chart -->
+        <div class="bg-white rounded-lg shadow-xl p-8 mb-6">
+            <h3 class="text-2xl font-bold text-slate-800 mb-6">Break-Even Sensitivity Analysis</h3>
+            <canvas id="sensitivityChart" height="80"></canvas>
+            <p class="text-xs text-slate-500 mt-4 text-center">
+                Shows how break-even units change with different fixed cost levels (±50%)
+            </p>
+        </div>
+
+        <!-- Advanced Options -->
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <h3 class="text-2xl font-bold text-slate-800 mb-4">Advanced Options</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="flex items-center space-x-3 mb-4">
+                        <input type="checkbox" id="includeMVP" class="w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500">
+                        <span class="text-sm font-semibold text-slate-700">Include MVP Recovery ($270)</span>
+                    </label>
+                    <p class="text-xs text-slate-500 ml-8">Calculate units needed to also recover initial investment</p>
+                    
+                    <div id="mvpResults" class="mt-4 p-4 bg-indigo-50 rounded-lg hidden">
+                        <p class="text-sm font-semibold text-indigo-900 mb-2">With MVP Recovery:</p>
+                        <p class="text-2xl font-bold text-indigo-700" id="mvpUnits">-</p>
+                        <p class="text-xs text-indigo-600 mt-1">additional units needed (one-time)</p>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="resetBtn" class="w-full bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
+                        Reset to Defaults
+                    </button>
+                    <p class="text-xs text-slate-500 mt-2 text-center">Restore all values to Month 6 baseline</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-slate-400 text-sm">
+            <p>💡 AI Screening Business Financial Model • Built with precision for data-driven decisions</p>
+            <p class="mt-1">All calculations update in real-time as you adjust variables</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Chart
+        const ctx = document.getElementById('sensitivityChart').getContext('2d');
+        let sensitivityChart;
+
+        // Default values
+        const defaults = {
+            techCost: 999,
+            marketingCost: 750,
+            premiumRevenue: 30,
+            premiumCost: 5.90,
+            premiumMix: 33.33,
+            enterpriseRevenue: 40,
+            enterpriseCost: 11.88,
+            enterpriseMix: 33.33,
+            basicRevenue: 10,
+            basicCost: 1.56,
+            basicMix: 33.34
+        };
+
+        // Get all input elements
+        const inputs = {
+            techCost: document.getElementById('techCost'),
+            techCostSlider: document.getElementById('techCostSlider'),
+            marketingCost: document.getElementById('marketingCost'),
+            marketingCostSlider: document.getElementById('marketingCostSlider'),
+            premiumRevenue: document.getElementById('premiumRevenue'),
+            premiumCost: document.getElementById('premiumCost'),
+            premiumMix: document.getElementById('premiumMix'),
+            enterpriseRevenue: document.getElementById('enterpriseRevenue'),
+            enterpriseCost: document.getElementById('enterpriseCost'),
+            enterpriseMix: document.getElementById('enterpriseMix'),
+            basicRevenue: document.getElementById('basicRevenue'),
+            basicCost: document.getElementById('basicCost'),
+            basicMix: document.getElementById('basicMix'),
+            includeMVP: document.getElementById('includeMVP'),
+            resetBtn: document.getElementById('resetBtn')
+        };
+
+        // Sync slider and input
+        inputs.techCostSlider.addEventListener('input', () => {
+            inputs.techCost.value = inputs.techCostSlider.value;
+            calculate();
+        });
+        inputs.techCost.addEventListener('input', () => {
+            inputs.techCostSlider.value = inputs.techCost.value;
+            calculate();
+        });
+        inputs.marketingCostSlider.addEventListener('input', () => {
+            inputs.marketingCost.value = inputs.marketingCostSlider.value;
+            calculate();
+        });
+        inputs.marketingCost.addEventListener('input', () => {
+            inputs.marketingCostSlider.value = inputs.marketingCost.value;
+            calculate();
+        });
+
+        // Add listeners to all inputs
+        Object.keys(inputs).forEach(key => {
+            if (key !== 'resetBtn' && key !== 'techCostSlider' && key !== 'marketingCostSlider') {
+                inputs[key].addEventListener('input', calculate);
+            }
+        });
+
+        // Reset button
+        inputs.resetBtn.addEventListener('click', () => {
+            Object.keys(defaults).forEach(key => {
+                inputs[key].value = defaults[key];
+                if (key === 'techCost' || key === 'marketingCost') {
+                    inputs[key + 'Slider'].value = defaults[key];
+                }
+            });
+            inputs.includeMVP.checked = false;
+            calculate();
+        });
+
+        function calculate() {
+            // Get values
+            const techCost = parseFloat(inputs.techCost.value) || 0;
+            const marketingCost = parseFloat(inputs.marketingCost.value) || 0;
+            const totalFixed = techCost + marketingCost;
+
+            // Premium tier
+            const premiumRev = parseFloat(inputs.premiumRevenue.value) || 0;
+            const premiumCost = parseFloat(inputs.premiumCost.value) || 0;
+            const premiumMix = parseFloat(inputs.premiumMix.value) || 0;
+            const premiumMargin = premiumRev - premiumCost;
+
+            // Enterprise tier
+            const enterpriseRev = parseFloat(inputs.enterpriseRevenue.value) || 0;
+            const enterpriseCost = parseFloat(inputs.enterpriseCost.value) || 0;
+            const enterpriseMix = parseFloat(inputs.enterpriseMix.value) || 0;
+            const enterpriseMargin = enterpriseRev - enterpriseCost;
+
+            // Basic tier
+            const basicRev = parseFloat(inputs.basicRevenue.value) || 0;
+            const basicCost = parseFloat(inputs.basicCost.value) || 0;
+            const basicMix = parseFloat(inputs.basicMix.value) || 0;
+            const basicMargin = basicRev - basicCost;
+
+            // Check sales mix total
+            const mixTotal = premiumMix + enterpriseMix + basicMix;
+            document.getElementById('mixTotal').textContent = mixTotal.toFixed(2) + '%';
+            
+            const mixWarning = document.getElementById('mixWarning');
+            if (Math.abs(mixTotal - 100) > 0.1) {
+                mixWarning.textContent = '(Should equal 100%)';
+                mixWarning.className = 'ml-2 text-xs text-red-600 font-bold';
+            } else {
+                mixWarning.textContent = '✓ Valid';
+                mixWarning.className = 'ml-2 text-xs text-green-600 font-bold';
+            }
+
+            // Calculate weighted average contribution margin
+            const weightedMargin = (premiumMargin * premiumMix/100) + 
+                                  (enterpriseMargin * enterpriseMix/100) + 
+                                  (basicMargin * basicMix/100);
+
+            // Calculate break-even units
+            const breakEvenUnits = weightedMargin > 0 ? totalFixed / weightedMargin : 0;
+
+            // Calculate units per tier
+            const premiumUnits = breakEvenUnits * (premiumMix/100);
+            const enterpriseUnits = breakEvenUnits * (enterpriseMix/100);
+            const basicUnits = breakEvenUnits * (basicMix/100);
+
+            // Calculate break-even revenue
+            const breakEvenRevenue = (premiumUnits * premiumRev) + 
+                                    (enterpriseUnits * enterpriseRev) + 
+                                    (basicUnits * basicRev);
+
+            // Update display
+            document.getElementById('totalFixed').textContent = '$' + totalFixed.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            document.getElementById('premiumMargin').textContent = '$' + premiumMargin.toFixed(2);
+            document.getElementById('enterpriseMargin').textContent = '$' + enterpriseMargin.toFixed(2);
+            document.getElementById('basicMargin').textContent = '$' + basicMargin.toFixed(2);
+            document.getElementById('weightedMargin').textContent = '$' + weightedMargin.toFixed(2);
+            document.getElementById('breakEvenUnits').textContent = Math.ceil(breakEvenUnits).toLocaleString();
+            document.getElementById('breakEvenRevenue').textContent = '$' + breakEvenRevenue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            
+            document.getElementById('premiumUnits').textContent = Math.ceil(premiumUnits).toLocaleString();
+            document.getElementById('enterpriseUnits').textContent = Math.ceil(enterpriseUnits).toLocaleString();
+            document.getElementById('basicUnits').textContent = Math.ceil(basicUnits).toLocaleString();
+            
+            document.getElementById('premiumMixDisplay').textContent = premiumMix.toFixed(2) + '% of sales';
+            document.getElementById('enterpriseMixDisplay').textContent = enterpriseMix.toFixed(2) + '% of sales';
+            document.getElementById('basicMixDisplay').textContent = basicMix.toFixed(2) + '% of sales';
+
+            // MVP recovery
+            if (inputs.includeMVP.checked) {
+                const mvpCost = 270;
+                const mvpUnits = weightedMargin > 0 ? mvpCost / weightedMargin : 0;
+                document.getElementById('mvpUnits').textContent = Math.ceil(mvpUnits).toLocaleString() + ' units';
+                document.getElementById('mvpResults').classList.remove('hidden');
+            } else {
+                document.getElementById('mvpResults').classList.add('hidden');
+            }
+
+            // Update chart
+            updateChart(totalFixed, weightedMargin);
+        }
+
+        function updateChart(baseFixed, weightedMargin) {
+            const labels = [];
+            const data = [];
+            
+            // Generate data points from -50% to +50% of fixed costs
+            for (let i = -50; i <= 50; i += 10) {
+                const fixedCost = baseFixed * (1 + i/100);
+                const units = weightedMargin > 0 ? fixedCost / weightedMargin : 0;
+                labels.push(i + '%');
+                data.push(Math.ceil(units));
+            }
+
+            if (sensitivityChart) {
+                sensitivityChart.destroy();
+            }
+
+            sensitivityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Break-Even Units',
+                        data: data,
+                        borderColor: 'rgb(79, 70, 229)',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' units';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Change in Fixed Costs'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
